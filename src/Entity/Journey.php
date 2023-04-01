@@ -16,7 +16,7 @@ class Journey
 
     #[ORM\ManyToOne(inversedBy: 'journeys')]
     #[ORM\JoinColumn(nullable: false)]
-    private Resident $resident;
+    private Passenger $passenger;
 
     #[ORM\ManyToOne(inversedBy: 'journeys')]
     #[ORM\JoinColumn(nullable: false)]
@@ -45,14 +45,14 @@ class Journey
         return $this->id;
     }
 
-    public function getResident(): Resident
+    public function getPassenger(): Passenger
     {
-        return $this->resident;
+        return $this->passenger;
     }
 
-    public function setResident(Resident $resident): self
+    public function setPassenger(Passenger $passenger): self
     {
-        $this->resident = $resident;
+        $this->passenger = $passenger;
 
         return $this;
     }

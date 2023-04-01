@@ -18,12 +18,12 @@ class Area
     #[ORM\Column(length: 255)]
     private string $name;
 
-    #[ORM\OneToMany(mappedBy: 'area', targetEntity: Resident::class)]
-    private Collection $residents;
+    #[ORM\OneToMany(mappedBy: 'area', targetEntity: Passenger::class)]
+    private Collection $passengers;
 
     public function __construct()
     {
-        $this->residents = new ArrayCollection();
+        $this->passengers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -44,29 +44,29 @@ class Area
     }
 
     /**
-     * @return Collection<int, Resident>
+     * @return Collection<int, Passenger>
      */
-    public function getResidents(): Collection
+    public function getPassengers(): Collection
     {
-        return $this->residents;
+        return $this->passengers;
     }
 
-    public function addResident(Resident $resident): self
+    public function addPassenger(Passenger $passenger): self
     {
-        if (!$this->residents->contains($resident)) {
-            $this->residents->add($resident);
-            $resident->setArea($this);
+        if (!$this->passengers->contains($passenger)) {
+            $this->passengers->add($passenger);
+            $passenger->setArea($this);
         }
 
         return $this;
     }
 
-    public function removeResident(Resident $resident): self
+    public function removePassenger(Passenger $passenger): self
     {
-        if ($this->residents->removeElement($resident)) {
+        if ($this->passengers->removeElement($passenger)) {
             // set the owning side to null (unless already changed)
-            if ($resident->getArea() === $this) {
-                $resident->setArea(null);
+            if ($passenger->getArea() === $this) {
+                $passenger->setArea(null);
             }
         }
 

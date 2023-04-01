@@ -15,7 +15,7 @@ class AnnualSubsidyBudget
 
     #[ORM\OneToOne(inversedBy: 'annualSubsidyBudget', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private Resident $resident;
+    private Passenger $passenger;
 
     #[ORM\Column]
     private float $budgetInKm;
@@ -25,14 +25,14 @@ class AnnualSubsidyBudget
         return $this->id;
     }
 
-    public function getResident(): Resident
+    public function getPassenger(): Passenger
     {
-        return $this->resident;
+        return $this->passenger;
     }
 
-    public function setResident(Resident $resident): self
+    public function setPassenger(Passenger $passenger): self
     {
-        $this->resident = $resident;
+        $this->passenger = $passenger;
 
         return $this;
     }

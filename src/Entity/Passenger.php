@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\ResidentRepository;
+use App\Repository\PassengerRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ResidentRepository::class)]
-class Resident
+#[ORM\Entity(repositoryClass: PassengerRepository::class)]
+class Passenger
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -34,14 +34,14 @@ class Resident
     #[ORM\Column]
     private DateTimeImmutable $registrationDate;
 
-    #[ORM\ManyToOne(inversedBy: 'residents')]
+    #[ORM\ManyToOne(inversedBy: 'passengers')]
     #[ORM\JoinColumn(nullable: false)]
     private Area $area;
 
-    #[ORM\OneToOne(mappedBy: 'resident', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'passenger', cascade: ['persist', 'remove'])]
     private AnnualSubsidyBudget $annualSubsidyBudget;
 
-    #[ORM\OneToMany(mappedBy: 'resident', targetEntity: Journey::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'passenger', targetEntity: Journey::class, orphanRemoval: true)]
     private Collection $journeys;
 
     public function __construct()
@@ -145,8 +145,8 @@ class Resident
 
     public function setAnnualSubsidyBudget(AnnualSubsidyBudget $annualSubsidyBudget): self
     {
-        if ($annualSubsidyBudget->getResident() !== $this) {
-            $annualSubsidyBudget->setResident($this);
+        if ($annualSubsidyBudget->getPassenger() !== $this) {
+            $annualSubsidyBudget->setPassenger($this);
         }
 
         $this->annualSubsidyBudget = $annualSubsidyBudget;
@@ -166,7 +166,7 @@ class Resident
     {
         if (!$this->journeys->contains($journey)) {
             $this->journeys->add($journey);
-            $journey->setResident($this);
+            $journey->setPassenger($this);
         }
 
         return $this;
@@ -175,8 +175,8 @@ class Resident
     public function removeJourney(Journey $journey): self
     {
         if ($this->journeys->removeElement($journey)) {
-            if ($journey->getResident() === $this) {
-                $journey->setResident(null);
+            if ($journey->getPassenger() === $this) {
+                $journey->setPassenger(null);
             }
         }
 

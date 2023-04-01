@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Journey;
-use App\Entity\Resident;
+use App\Entity\Passenger;
 use App\Entity\TaxiCompany;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -14,13 +14,13 @@ class JourneyFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $residents = $this->getResidents();
+        $passengers = $this->getPassengers();
         $taxiCompanies = $this->getTaxiCompanies();
-        $chunkPassengers = array_chunk($residents, ceil(count($residents) / count($taxiCompanies)));
+        $chunkPassengers = array_chunk($passengers, ceil(count($passengers) / count($taxiCompanies)));
 
         /**
          * @var int $i
-         * @var Resident[] $passengers
+         * @var Passenger[] $passengers
         */
         foreach ($chunkPassengers as $i => $passengers) {
             $taxiCompany = $taxiCompanies[$i];
@@ -45,12 +45,12 @@ class JourneyFixtures extends Fixture implements DependentFixtureInterface
         return $taxiCompany;
     }
 
-    public function getResident(string $name): Resident
+    public function getPassenger(string $name): Passenger
     {
-        /** @var Resident $resident */
-        $resident = parent::getReference($name);
+        /** @var Passenger $passenger */
+        $passenger = parent::getReference($name);
 
-        return $resident;
+        return $passenger;
     }
 
     /**
@@ -59,17 +59,17 @@ class JourneyFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            ResidentFixtures::class,
+            PassengerFixtures::class,
             TaxiCompanyFixtures::class,
         ];
     }
 
-    public function getJourney(Resident $passenger, TaxiCompany $taxiCompany): Journey
+    public function getJourney(Passenger $passenger, TaxiCompany $taxiCompany): Journey
     {
         $randomDateTime = $this->generateRandomDateTimeImmutable('-5 years', '-1 year');
 
         $journey = new Journey();
-        $journey->setResident($passenger);
+        $journey->setPassenger($passenger);
         $journey->setTaxiCompany($taxiCompany);
         $journey->setArrivalDateTime($randomDateTime);
         $journey->setStatus('COMPLETED');
@@ -94,16 +94,16 @@ class JourneyFixtures extends Fixture implements DependentFixtureInterface
     }
 
     /**
-     * @return Resident[]
+     * @return Passenger[]
      */
-    public function getResidents(): array
+    public function getPassengers(): array
     {
         return [
-            $this->getResident(ResidentFixtures::RESIDENT_JOHN),
-            $this->getResident(ResidentFixtures::RESIDENT_TIM),
-            $this->getResident(ResidentFixtures::RESIDENT_JANE),
-            $this->getResident(ResidentFixtures::RESIDENT_MARRY),
-            $this->getResident(ResidentFixtures::RESIDENT_CATHY),
+            $this->getPassenger(PassengerFixtures::PASSENGER_JOHN),
+            $this->getPassenger(PassengerFixtures::PASSENGER_TIM),
+            $this->getPassenger(PassengerFixtures::PASSENGER_JANE),
+            $this->getPassenger(PassengerFixtures::PASSENGER_MARRY),
+            $this->getPassenger(PassengerFixtures::PASSENGER_CATHY),
         ];
     }
 

@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\AnnualSubsidyBudget;
-use App\Entity\Resident;
+use App\Entity\Passenger;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -12,20 +12,16 @@ class AnnualSubsidyBudgetFixtures extends Fixture implements DependentFixtureInt
 {
     public function load(ObjectManager $manager): void
     {
-        $residents[] = $this->getResident(ResidentFixtures::RESIDENT_JOHN);
-        $residents[] = $this->getResident(ResidentFixtures::RESIDENT_TIM);
-        $residents[] = $this->getResident(ResidentFixtures::RESIDENT_JANE);
-        $residents[] = $this->getResident(ResidentFixtures::RESIDENT_MARRY);
-        $residents[] = $this->getResident(ResidentFixtures::RESIDENT_CATHY);
+        $passengers = $this->getPassengers();
 
-        foreach ($residents as $resident) {
+        foreach ($passengers as $passenger) {
             $subsidy = new AnnualSubsidyBudget();
             $subsidy->setBudgetInKm(rand(400, 1000));
-            $subsidy->setResident($resident);
+            $subsidy->setPassenger($passenger);
             $manager->persist($subsidy);
 
-            $resident->setLeftBudgetInKm($subsidy->getBudgetInKm());
-            $manager->persist($resident);
+            $passenger->setLeftBudgetInKm($subsidy->getBudgetInKm());
+            $manager->persist($passenger);
         }
 
         $manager->flush();
@@ -34,18 +30,32 @@ class AnnualSubsidyBudgetFixtures extends Fixture implements DependentFixtureInt
     /**
      * @param string $name
      */
-    public function getResident($name, ?string $class = null): Resident
+    public function getPassenger($name, ?string $class = null): Passenger
     {
-        /** @var Resident $resident */
-        $resident = parent::getReference($name, $class);
+        /** @var Passenger $passenger */
+        $passenger = parent::getReference($name, $class);
 
-        return $resident;
+        return $passenger;
     }
 
     public function getDependencies(): array
     {
         return [
-            ResidentFixtures::class,
+            PassengerFixtures::class,
+        ];
+    }
+
+    /**
+     * @return Passenger[]
+     */
+    public function getPassengers(): array
+    {
+        return [
+            $this->getPassenger(PassengerFixtures::PASSENGER_JOHN),
+            $this->getPassenger(PassengerFixtures::PASSENGER_TIM),
+            $this->getPassenger(PassengerFixtures::PASSENGER_JANE),
+            $this->getPassenger(PassengerFixtures::PASSENGER_MARRY),
+            $this->getPassenger(PassengerFixtures::PASSENGER_CATHY),
         ];
     }
 }
