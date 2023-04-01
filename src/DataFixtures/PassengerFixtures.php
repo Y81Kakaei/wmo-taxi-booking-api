@@ -26,54 +26,49 @@ class PassengerFixtures extends Fixture implements DependentFixtureInterface
         /** @var Area $amsterdamArea */
         $amsterdamArea = $this->getReference(AreaFixtures::AREA_AMSTERDAM);
 
-        $passengerJohn = new Passenger();
-        $passengerJohn->setName('John');
-        $passengerJohn->setAddress('Street1 11, 12345FG');
-        $passengerJohn->setArea($utrechtArea);
-        $passengerJohn->setCity('Utrecht');
-        $passengerJohn->setIsSubsidized(true);
-        $passengerJohn->setLeftBudgetInKm(0);
-        $passengerJohn->setRegistrationDate(new DateTimeImmutable('2022-01-01'));
+        $passengerJohn = $this->createPassenger(
+            'John',
+            'Street1 11, 12345FG',
+            $utrechtArea,
+            'Utrecht',
+            '2022-01-01'
+        );
         $manager->persist($passengerJohn);
 
-        $passengerTim = new Passenger();
-        $passengerTim->setName('Tim');
-        $passengerTim->setAddress('Street2 22, 12345HI');
-        $passengerTim->setArea($utrechtArea);
-        $passengerTim->setCity('Utrecht');
-        $passengerTim->setIsSubsidized(true);
-        $passengerTim->setLeftBudgetInKm(0);
-        $passengerTim->setRegistrationDate(new DateTimeImmutable('2022-02-01'));
+        $passengerTim = $this->createPassenger(
+            'Tim',
+            'Street2 22, 12345HI',
+            $utrechtArea,
+            'Utrecht',
+            '2022-02-01'
+        );
         $manager->persist($passengerTim);
 
-        $passengerJane = new Passenger();
-        $passengerJane->setName('Jane');
-        $passengerJane->setAddress('Street3 33, 12345JK');
-        $passengerJane->setArea($amsterdamArea);
-        $passengerJane->setCity('Amsterdam');
-        $passengerJane->setIsSubsidized(true);
-        $passengerJane->setLeftBudgetInKm(0);
-        $passengerJane->setRegistrationDate(new DateTimeImmutable('2022-03-01'));
+        $passengerJane = $this->createPassenger(
+            'Jane',
+            'Street3 33, 12345JK',
+            $utrechtArea,
+            'Amsterdam',
+            '2022-03-01'
+        );
         $manager->persist($passengerJane);
 
-        $passengerCathy = new Passenger();
-        $passengerCathy->setName('Cathy');
-        $passengerCathy->setAddress('Street4 44, 12345LM');
-        $passengerCathy->setArea($amsterdamArea);
-        $passengerCathy->setCity('Amsterdam');
-        $passengerCathy->setIsSubsidized(true);
-        $passengerCathy->setLeftBudgetInKm(0);
-        $passengerCathy->setRegistrationDate(new DateTimeImmutable('2022-04-01'));
+        $passengerCathy = $this->createPassenger(
+            'Cathy',
+            'Street4 44, 12345LM',
+            $amsterdamArea,
+            'Amsterdam',
+            '2022-04-01'
+        );
         $manager->persist($passengerCathy);
 
-        $passengerMarry = new Passenger();
-        $passengerMarry->setName('Marry');
-        $passengerMarry->setAddress('Street5 55, 12345NO');
-        $passengerMarry->setArea($amsterdamArea);
-        $passengerMarry->setCity('Amsterdam');
-        $passengerMarry->setIsSubsidized(false);
-        $passengerMarry->setLeftBudgetInKm(0);
-        $passengerMarry->setRegistrationDate(new DateTimeImmutable('2022-05-01'));
+        $passengerMarry = $this->createPassenger(
+            'Marry',
+            'Street5 55, 12345NO',
+            $amsterdamArea,
+            'Amsterdam',
+            '2022-05-01'
+        );
         $manager->persist($passengerMarry);
         $manager->flush();
 
@@ -89,5 +84,24 @@ class PassengerFixtures extends Fixture implements DependentFixtureInterface
         return [
             AreaFixtures::class,
         ];
+    }
+
+    private function createPassenger(
+        string $name,
+        string $address,
+        Area $area,
+        string $city,
+        string $registrationDate
+    ): Passenger {
+        $passengerJohn = new Passenger();
+        $passengerJohn->setName($name);
+        $passengerJohn->setAddress($address);
+        $passengerJohn->setArea($area);
+        $passengerJohn->setCity($city);
+        $passengerJohn->setIsSubsidized(true);
+        $passengerJohn->setLeftBudgetInKm(0);
+        $passengerJohn->setRegistrationDate(new DateTimeImmutable($registrationDate));
+
+        return $passengerJohn;
     }
 }

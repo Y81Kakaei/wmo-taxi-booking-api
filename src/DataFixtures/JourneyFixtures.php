@@ -25,7 +25,7 @@ class JourneyFixtures extends Fixture implements DependentFixtureInterface
         foreach ($chunkPassengers as $i => $passengers) {
             $taxiCompany = $taxiCompanies[$i];
             foreach ($passengers as $passenger) {
-                $journey = $this->getJourney($passenger, $taxiCompany);
+                $journey = $this->createJourney($passenger, $taxiCompany);
 
                 $passenger->setLeftBudgetInKm($passenger->getLeftBudgetInKm() - $journey->getDistanceInKm());
 
@@ -64,7 +64,7 @@ class JourneyFixtures extends Fixture implements DependentFixtureInterface
         ];
     }
 
-    public function getJourney(Passenger $passenger, TaxiCompany $taxiCompany): Journey
+    public function createJourney(Passenger $passenger, TaxiCompany $taxiCompany): Journey
     {
         $randomDateTime = $this->generateRandomDateTimeImmutable('-5 years', '-1 year');
 
