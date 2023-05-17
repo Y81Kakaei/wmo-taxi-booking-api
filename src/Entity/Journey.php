@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\JourneyStatus;
 use App\Repository\JourneyRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
@@ -129,14 +130,14 @@ class Journey
         return $this;
     }
 
-    public function getStatus(): string
+    public function getStatus(): JourneyStatus
     {
-        return $this->status;
+        return JourneyStatus::from($this->status);
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(JourneyStatus $status): self
     {
-        $this->status = $status;
+        $this->status = $status->value;
 
         return $this;
     }

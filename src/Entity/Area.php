@@ -21,6 +21,9 @@ class Area
     #[ORM\OneToMany(mappedBy: 'area', targetEntity: Passenger::class)]
     private Collection $passengers;
 
+    #[ORM\OneToOne(mappedBy: 'area', targetEntity: TaxiCompany::class)]
+    private TaxiCompany $taxiCompany;
+
     public function __construct()
     {
         $this->passengers = new ArrayCollection();
@@ -71,5 +74,15 @@ class Area
         }
 
         return $this;
+    }
+
+    public function getTaxiCompany(): TaxiCompany
+    {
+        return $this->taxiCompany;
+    }
+
+    public function setTaxiCompany(TaxiCompany $taxiCompany): void
+    {
+        $this->taxiCompany = $taxiCompany;
     }
 }
